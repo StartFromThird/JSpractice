@@ -57,3 +57,42 @@ var get_goods_json = function(ctx) {
 } 
 app.use(route.get('/ajax/goods', get_goods_json));
 ``` 
+  
+## 用 Koa 做服务 
+1. dependencies: koa-route, koa-static, koa-static-server, co-views, ejs    
+2. 文件结构  
+    app.js  
+    static--js--common.js  
+    view----goodsDetail.html 
+3. 实现   
+app.js  
+```javascript
+// 静态资源文件
+// http://127.0.0.1:3001/js/common.js
+
+var path = require('path');
+var serve = require('koa-static');
+var staticPath = './static'
+var main = serve(path.join( __dirname,  staticPath));
+app.use(main);
+
+// 页面
+// http://127.0.0.1:3001/goodsDetail?id=180807
+
+var views = require('co-views')
+var render = views('./view', {
+  map: { html: 'ejs' }
+});
+var koa_static = require('koa-static-server');
+app.use(route.get('/goodsDetail', async function(ctx, next){
+    ctx.set('Cache-Control', 'no-cache');
+    var params = querystring.parse(ctx.req._parsedUrl.query);
+    var goodsId = params.id;
+    ctx.body = await render('goodsDetail', {goodsId:goodsId});
+}));
+```
+
+有用资料：  
+阮一峰koa教程 <http://www.ruanyifeng.com/blog/2017/08/koa.html>  
+踩坑koa1.x升级koa2.x <https://div.io/topic/1937>  
+node path模块 <http://nodejs.cn/api/path.html#path_path>
