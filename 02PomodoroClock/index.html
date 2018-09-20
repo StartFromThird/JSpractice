@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <title>PomodoroClock</title>
+    <link rel="stylesheet" href="main-pc.css">
+    <!-- <link rel="stylesheet" href="main-pc.css" media="screen and (min-width: 1024px)"> -->
+</head>
+<body>
+    <div id="main">
+        <!-- 设置工作/休息时间 面板 -->
+        <div class="mainContainer">
+            <div class="mainboard settingOption">
+                <label for="setWorkTime">
+                    工作时间<input id="setWorkTime" type="text" value="25" pattern="[0][0-9]*[1-6][0-9]*" />分钟
+                </label>
+                <label for="setBreakTime">
+                    休息时间<input id="setBreakTime" type="text" value="05" pattern="[0][0-9]*[1-6][0-9]*" />分钟
+                </label>
+                <p>* 请将时间设置为 1 ~ 60 间的整数</p>
+                <div class="startButton">开始！(●'◡'●)</div>
+            </div>
+            <div class="mainboard timer">
+                <div class="leftTimeBox"></div>
+                <canvas id="processCurve" width=300px height=300px ></canvas>
+                <!-- <div class="giveUpButton">放弃？ (ಥ _ ಥ) </div> -->
+                <!-- <div class="stopButton">中断休息？</div> -->
+                <div class="timerMask"></div>
+            </div>
+            <div class="mainboard finishWork">
+                <p>工作完成</p>
+                <div>休息一下</div>
+                <div>不用了</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var visibleWidth = document.body.clientWidth
+        // 页面宽度750px font-size 100px 页面的总宽度设为7.5rem  200px / 100 = 2rem
+        if(visibleWidth 
+            < 1024){
+            document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
+        }
+        
+    </script>
+    <script src="js/common.js"></script>
+    <script src="js/set.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/bind.js"></script>
+    <script>
+    var _main = function(){
+        showLatestSetting();
+        forBind();
+    }
+    _main();
+    </script>
+    <!-- <script>
+        var timeGap = getSettingObj.workTime;
+        console.log("timeGap", timeGap);
+        var workBeginTime = new Date();
+        var workEndTime = 0;
+        workEndTime = workBeginTime.getTime() + 1000 * 60 * timeGap;
+        
+
+        // 保证数字是两位数，不足加0，且转为字符串
+        var doubleDigitStr = function(i){
+            if(i < 10){
+                return '0' + i;
+            }else{
+                return '' + i;
+            }
+        }
+        // 显示剩余时间
+        var showLeftTime = function(){
+            var now = new Date();
+            var leftTime = (workEndTime - now.getTime()) / 1000;
+            var leftMin = doubleDigitStr(Math.floor(leftTime / 60));
+            var leftSec = doubleDigitStr(Math.floor(leftTime % 60));
+            var leftTimeHtml = leftMin + ':' + leftSec;
+            leftTime.innerHTML = leftTimeHtml;
+            return leftTime;
+        }
+        
+        // 剩余时间弧线
+        var showProcessCurve = function(){
+            var leftPrecent = showLeftTime() / (timeGap * 60);
+            var ctx = processCurve.getContext("2d");
+            var width = ctx.canvas.width;
+            var height = ctx.canvas.height;
+            var r = width/2;
+            var ox = width/2;
+            var oy = height/2;
+            var drawCurve = function(){
+                ctx.save();
+                ctx.translate(ox, oy);
+                ctx.beginPath();
+                ctx.strokeStyle = '#555';
+                ctx.lineWidth = 4;
+                ctx.arc(0, 0, r , -0.5 * Math.PI, ((1 - leftPrecent) * 2 - 0.5) * Math.PI, false);
+                ctx.stroke();  
+                ctx.restore();   
+            }
+            var draw = function(){
+                ctx.clearRect(0, 0, width, height);
+                ctx.save();
+                drawCurve();
+                ctx.restore();
+            }
+            draw();   
+        }
+        // showProcessCurve()
+        // setInterval(showProcessCurve,1000);
+    </script> -->
+    <!-- <script>
+        var defaultSettingObj = {
+            workTime: 25,
+            breakTime: 5,
+        }
+        var startBtn = $('.startButton');
+        // 存储设置中 工作，休息 间隔时间
+        var saveSettingObj = function(settingObj){
+            var t = JSON.stringify(settingObj);  
+            sessionStorage.setItem("setting",t);  
+        }
+        // 获取设置中 工作，休息 间隔时间       
+        var getSettingObj = function(){
+            var t = sessionStorage.getItem("setting"); 
+            var settingObj = JSON.parse(t); 
+            var w = parseInt(settingObj.workTime);
+            var b = parseInt(settingObj.breakTime);
+            if(w!==0){
+                settingObj.workTime = w || defaultSettingObj.workTime;
+            }
+            if(b!==0){
+                settingObj.breakTime = b || defaultSettingObj.breakTime;
+            }
+            return settingObj
+        }
+        // 加载页面时，显示上一次设置
+        var showLatestSetting = function(){
+            var latestSettingObj = getSettingObj();
+            $('#setWorkTime').value = latestSettingObj.workTime;
+            $('#setBreakTime').value = latestSettingObj.breakTime;
+        }
+        showLatestSetting();
+        // 三个页面滑动动画 i -- 1 设置页面，2 计时页面，3 结束页面
+        // 【动画效果没做】
+        var changeBoard = function(i){
+            var mainContainer = $(".mainContainer");
+            // mainContainer.classList.add(animation);
+            // bindEvent(mainContainer, 'animationend', function(){
+            //     mainContainer.classList.remove(animation);
+            // });
+            var t = `top: -${(i - 1) * 30}vw`;
+            mainContainer.style.cssText = t;
+            
+        }
+        // 开始按钮 绑定事件
+        // 调用剩余时间及曲线函数
+        var startWork = function(){
+            var settingObj ={}
+            bindEvent(startBtn, 'click', function(){
+                // 存下当前 w/b 时间设置
+                settingObj.workTime = $('#setWorkTime').value;
+                settingObj.breakTime = $('#setBreakTime').value;
+                saveSettingObj(settingObj);
+                // 滑动到计时页面，开始计时
+                changeBoard(2);
+                // setInterval(showProcessCurve,1000);
+            })
+        }
+        startWork()
+    </script> -->
+    
+</body>
+</html>

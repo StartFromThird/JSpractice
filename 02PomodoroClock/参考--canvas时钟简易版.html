@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #root{
+            height: 300px;
+            width: 300px;
+            border: 1px solid #ff0;
+        }
+    </style>
+</head>
+<body>
+<canvas id="root" width=400px height=400px></canvas>
+<script>
+    
+    var c = document.querySelector('#root');
+    var ctx = c.getContext("2d");
+    var width = ctx.canvas.width;
+    var height = ctx.canvas.height;
+    var rem = width/400;
+    
+    var r = width/2;
+    var ox = width/2;
+    var oy = height/2;
+    var drawCurve = function(){
+        ctx.save();
+        // 重新定义00点
+        ctx.translate(ox, oy);
+        // 画表盘
+        ctx.beginPath();
+        ctx.lineWidth = 10*rem;
+        ctx.arc(0, 0, r, -0.5*Math.PI, 2*Math.PI, false);
+        ctx.stroke();     
+    }
+   
+    var drawSecond = function(sec) { 
+        ctx.save();
+        var rad = 2 * Math.PI / 60 * sec;
+        ctx.beginPath();
+        ctx.fillStyle = '#f00';
+        ctx.lineWidth = 3*rem;
+        ctx.lineCap = "round";
+        ctx.rotate(rad);
+        ctx.moveTo(-2*rem, 20*rem);
+        ctx.lineTo(2*rem, 20*rem);
+        ctx.lineTo(1*rem, - r + 10*rem);
+        ctx.lineTo(-1*rem, - r + 10*rem);
+        ctx.fill();
+        ctx.restore();
+    }  
+    function draw(){
+        ctx.clearRect(0, 0, width, height);
+        drawCurve();
+        var now = new Date();
+        var second = now.getSeconds();
+        console.log(second)
+        drawSecond(second);
+        ctx.restore();
+     }
+     draw()
+    setInterval(draw, 500);
+</script>        
+</body>
+</html>
