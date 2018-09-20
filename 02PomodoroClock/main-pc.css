@@ -1,0 +1,155 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+#main{
+    position: relative; 
+    box-sizing: border-box;
+    margin: 10vw auto 0;
+    width: 30vw;
+    height: 30vw;
+/*    margin: 2rem auto 0;
+    width: 6rem;
+    height: 6rem;*/
+    overflow: hidden;
+    border-radius: 10%;
+    border: 4px solid #555;  
+    
+}
+.mainContainer{
+    position: relative;
+    top: 0vw;
+    left: -4px;
+    /* outline: 4px solid rgb(35, 243, 129);  */
+}
+/* .moveContainer{
+    animation: spin linear 0.5s;
+}
+@keyframes spin {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(0, -30vw);
+    }
+} */
+.mainboard{   
+    box-sizing: border-box;
+    margin: 0 auto; 
+    width: 30vw;
+    height: 30vw;    
+    /*border: 4px solid rgb(243, 94, 35);*/
+    text-align: center;  
+}
+/* 设置 工作，休息时间 */
+.settingOption{
+    padding-top: 20px; 
+    /*background: rgba(9, 255, 0, 0.349);*/
+}
+.settingOption label{
+    height: 40px;
+    display: block;
+    font-size: 30px;
+    /* outline: 1px solid #f00; */
+    margin: 10px 0;
+}
+.settingOption input{
+    width: 50px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 30px;
+}
+.settingOption p{
+    font-size: 18px;
+}
+.startButton{
+    box-sizing: border-box;
+    height: 10vw;
+    padding: 0 1vw;
+    background: rgba(110, 110, 110, 0.9);
+    line-height: 10vw;
+    font-size: 40px;
+    text-align: center;            
+}
+.startButton:hover{
+    cursor: pointer;
+}
+/* 倒计时及曲线 */
+.timer{
+    position: relative; 
+    /*background: rgba(145, 226, 14, 0.137);*/
+    padding-top: 10vw;
+}
+.timer:hover .giveUpButton{
+    /*display: block;*/
+}
+.leftTimeBox{
+    box-sizing: border-box;
+    height: 10vw;
+    width: 30vw;
+    line-height: 10vw;
+    /* outline: 1px solid #05f; */
+    font-size: 40px;
+    text-align: center;
+    margin: 0 -4px;
+    /* background: aqua; */
+}
+#processCurve{
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    /* outline: 4px solid rgba(85, 85, 85, 0.5);  */
+    border-radius: 50%;
+    border: 4px solid rgba(85, 85, 85, 0.5);
+    width: 100%;
+    height: 100%;
+}
+.timerMask{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    /*background-color: rgba(255,255,0,0.2);*/
+}
+.giveUpButton{
+/*    display: none;*/
+    position: absolute;
+    top: 10vw;
+    left: -4px;
+    box-sizing: border-box;
+    height: 10vw;
+    width: 30vw;
+    padding: 0 1vw;
+    border: 1px solid #555; 
+    background:rgba(110, 110, 110, 0.9);
+    line-height: 10vw;
+    font-size: 40px;
+    text-align: center;
+}
+.giveUpButton:hover{
+    cursor: pointer;
+}
+/* 计时结束 */
+.finishWork{
+    /*background: rgba(0, 255, 255, 0.322);*/
+}
+.finishWork p,
+.mainboard.finishWork div{
+    box-sizing: border-box;
+    height: 9vw;
+    padding: 0 1vw;
+    line-height: 10vw;
+    font-size: 40px;
+    text-align: center;   
+}
+.mainboard.finishWork div{
+    background:rgba(110, 110, 110, 0.9);
+}
+.mainboard.finishWork div:last-child{
+    margin-top: 1vw;
+}
+.mainboard.finishWork div:hover{
+    cursor: pointer;
+}
