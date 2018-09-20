@@ -1,0 +1,43 @@
+body{
+    margin: 0;
+    padding: 0;
+    background: #333;
+    font-family:'Raleway', sans-serif;
+    color: #333;
+    font-weight: 400;
+}
+.quoteBox{
+    max-width: 62vw;
+    background: #fff;
+    border-radius: 5px;
+    margin:8vh auto auto auto;
+    padding: 4vw; 
+}
+/*Quote文字部分*/
+.quoteContent>div{
+    line-height: 40px;    
+    font-size: 28px;
+}
+.quoteContent>p{
+    text-align: right;
+    vertical-align: middle;
+    font-size: 16px;
+    font-style: oblique;
+}
+.quoteContent>p>span{
+    margin-left: 20px;
+    font-size: 24px;
+    font-style: normal;
+}
+/*Quote 按钮*/
+button{
+      height: 40px;
+      border: none;
+      border-radius: 3px;
+      color: #fff;
+      background-color: #333;
+      outline: none;
+      padding: 8px 18px 6px 18px;
+      margin-top: 30px;
+      cursor: pointer;
+}
