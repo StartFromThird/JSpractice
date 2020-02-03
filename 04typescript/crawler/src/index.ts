@@ -1,55 +1,31 @@
+import fs from "fs";
+import path from "path";
 import superagent from "superagent";
-import cheerio from "cheerio";
-interface Course {
-  title: string;
-  num: number;
-}
-interface CourseRes {
-  time: number;
-  data: Course[];
+import leeAnalyse from "./leeAnalyse";
+export interface Analyse {
+  analyse: (html: string, filepath: string) => string;
 }
 class Crawler {
-  private secret = "secretKey";
-  private url = `http://www.dell-lee.com/typescript/demo.html?secret=${this.secret}`;
+  private filepath = path.resolve(__dirname, "../data/course.json");
   // 获取 html
   async getRawHtml() {
     const res = await superagent.get(this.url);
     return res.text;
   }
-  // 拆html 提取对应数据
-  getInfo(html: string) {
-    let courseDesc: Course[] = [];
-    const $ = cheerio.load(html);
-    const doms = $(".course-item>img")
-      .next()
-      .next()
-      .text();
-    $(".course-item").map((index, ele) => {
-      const domP = $(ele).find(".course-desc");
-      const title = domP.eq(0).text();
-      const num = parseInt(
-        domP
-          .eq(1)
-          .text()
-          .split("：")[1],
-        10
-      );
-      courseDesc.push({
-        title,
-        num
-      });
-    });
-    return {
-      time: new Date().getTime(),
-      data: courseDesc
-    };
+
+  writeFile(content: string) {
+    fs.writeFileSync(this.filepath, content);
   }
-  constructor() {
+  constructor(private analyse: Analyse, private url: string) {
     this.init();
   }
   async init() {
     const html = await this.getRawHtml();
-    const info = this.getInfo(html);
+    const writeIn = this.analyse.analyse(html, this.filepath);
+    this.writeFile(writeIn);
   }
 }
-const crawler = new Crawler();
+const secret = "secretKey";
+const url = `http://www.dell-lee.com/typescript/demo.html?secret=${secret}`;
+const analyse = new leeAnalyse();
+new Crawler(analyse, url);
