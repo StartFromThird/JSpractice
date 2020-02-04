@@ -64,3 +64,27 @@ const sayHi: saysth = (w: string) => {
   return `say: Hi! ${w}`;
 };
 console.log("sayHi :", sayHi("Blue bird"));
+
+// 接口 继承
+interface Animal1 {
+  name: string;
+}
+interface Wolf extends Animal1 {
+  eat: string[];
+}
+interface Dog extends Animal1 {
+  eat: string[];
+}
+const wolf = {
+  name: "Wolf",
+  eat: ["rabbit", "goat"]
+};
+const dog = {
+  name: "Dog",
+  eat: ["pork", "mutton"]
+};
+const getAnimalName = (animal: Animal1) => {
+  console.log(animal.name);
+};
+getAnimalName(wolf);
+getAnimalName(dog);
