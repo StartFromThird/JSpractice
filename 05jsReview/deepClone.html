@@ -1,0 +1,42 @@
+<script>
+  const test1 = {
+    name: "Jo",
+    job: "writer",
+    husband: null,
+    sister: [
+      {
+        name: "Amy",
+        job: "painter",
+        husband: {
+          name: "Laurie"
+        }
+      }
+    ],
+    time: () => {
+      return new Date();
+    }
+  };
+
+  const deepClone = (obj = {}) => {
+    // 返回 str boolean num undefined null fn
+    if (typeof obj !== "object" || obj == null) {
+      return obj;
+    }
+    // 处理 arr obj
+    let res = obj instanceof Array ? [] : {};
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        res[key] = deepClone(obj[key]);
+      }
+    }
+    return res;
+  };
+
+  const obj1 = deepClone(test1);
+  console.log(obj1.time(), "deepClone Result：", obj1);
+  console.log(test1.sister);
+  console.log(
+    (obj1.sister[0].husband.name = "change"),
+    obj1.sister[0].husband.name === test1.sister[0].husband.name
+  );
+</script>
