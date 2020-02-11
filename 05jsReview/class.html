@@ -1,0 +1,47 @@
+<script>
+  class Animal {
+    constructor(name) {
+      this.name = name;
+    }
+    eat() {
+      console.log(`${this.name} eat something`);
+    }
+  }
+  class Pet extends Animal {
+    constructor(petName, ownerName) {
+      super(petName);
+      this.owner = ownerName;
+    }
+    sayHi() {
+      console.log(`${this.name} 的主人是 ${this.owner}`);
+    }
+    // eat() {
+    //   super.eat();
+    //   console.log(`eat meat`);
+    // }
+  }
+
+  const dog = new Animal("Dog");
+  const dh = new Pet("Dahuang", "GuGe");
+  // 执行规则：先找自己属性方法，找不到去原型找
+  dh.eat();
+
+  // 类本质是函数
+  console.log(typeof Pet);
+
+  // A instanceof B, B是A的构造函数的一个父类
+  console.log(
+    dog instanceof Animal,
+    dh instanceof Animal,
+    dh instanceof Object,
+    Pet instanceof Object,
+    Pet instanceof Animal // F
+  );
+
+  // 实例的隐式原型 ==== 实例对应类的显示原型
+  // O.__proto__ 当前对象的原型
+  // A.prototype 当前函数作为构造函数，new 对象的原型
+  console.log(dh.__proto__ === Pet.prototype);
+  console.log(Pet.prototype.__proto__ === Animal.prototype);
+  console.log(Object.prototype.__proto__);
+</script>
