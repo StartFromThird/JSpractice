@@ -1,0 +1,21 @@
+<script>
+  Function.prototype.bind1 = function() {
+    // 拆分：传入 this, 传入参数
+    const argArr = Array.from(arguments);
+    const thisArg = argArr.shift();
+    // fn1.bind调用, this 指向fn1
+    // 返回函数
+    return () => {
+      return this.apply(thisArg, argArr);
+    };
+  };
+
+  function fn1(a, b, c) {
+    console.log("this", this);
+    console.log("param", a, b, c);
+    return "this is fn1";
+  }
+
+  const fn1Bind = fn1.bind1({ x: 100 }, 10, 20, 30);
+  console.log(fn1Bind());
+</script>

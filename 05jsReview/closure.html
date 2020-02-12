@@ -1,0 +1,34 @@
+<script>
+  // 返回值为函数
+  // 隐藏部分数据
+  const info = () => {
+    const data = {
+      name: "Alex"
+    };
+    return {
+      set: (k, v) => {
+        data[k] = v;
+        data["modify"] = new Date().getTime();
+      },
+      get: k => {
+        return data[k];
+      }
+    };
+  };
+  const Alex = info();
+  Alex.set("age", 61);
+  console.log(Alex.get("age"));
+
+  // 参数是函数
+  // 自由变量，当前作用域若没有，顺着函数定义的位置的上级作用域查找
+  const name = "Jo";
+  const say = msg => {
+    console.log(`Hi! ${name}, ${msg}`);
+  };
+
+  const greet = fn => {
+    const name = "Alex";
+    fn("Nice day!");
+  };
+  greet(say);
+</script>
