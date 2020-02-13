@@ -1,0 +1,63 @@
+<script>
+  // 判断两个引用类型数据 key value 是否相同
+  const isObj = o => {
+    return typeof o === "object" && o !== null;
+  };
+  const isEqual = (o1, o2) => {
+    if (o1 === o2) {
+      return true;
+    }
+    // 不是对象直接比较
+    if (!isObj(o1) || !isObj(o2)) {
+      return o1 === o2;
+    }
+    // 两个引用类型比较
+    const o1k = Object.keys(o1);
+    const o2k = Object.keys(o2);
+    if (o1k.length !== o2k.length) {
+      return false;
+    } else {
+      for (const key in o1) {
+        if (isEqual(o1[key], o2[key]) === false) {
+          return false;
+        }
+      }
+      return true;
+    }
+  };
+  const test1 = {
+    name: "Jo",
+    job: "writer",
+    husband: null,
+    sister: [
+      {
+        name: "Amy",
+        job: "painter",
+        husband: {
+          name: "Laurie"
+        }
+      },
+      {
+        name: "Meg"
+      }
+    ]
+  };
+  const test2 = {
+    name: "Jo",
+    job: "writer",
+    husband: null,
+    sister: [
+      {
+        name: "Amy",
+        job: "painter",
+        husband: {
+          name: "Laurie"
+        }
+      },
+      {
+        name: "Meg"
+      }
+    ]
+  };
+  console.log(isEqual(test1, test2));
+</script>
