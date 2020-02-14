@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>节流</title>
+    <style>
+      #dragbox {
+        border: 1px solid #f00;
+        width: 200px;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>持续触发情况下，间隔固定时间触发。</p>
+    <div id="dragbox" draggable="true"></div>
+    <script>
+      let d = document.querySelector("#dragbox");
+      const throttleDrag = () => {
+        /**
+         * timer 空，新设定时器
+         * 未到指定时间，直接返回
+         * 到时间，执行函数，timer 自控
+         */
+        let timer = null;
+        d.addEventListener("drag", e => {
+          if (timer) {
+            return;
+          } else {
+            timer = setTimeout(() => {
+              console.log(e.offsetX);
+              clearTimeout(timer);
+              timer = null;
+            }, 500);
+          }
+        });
+      };
+      // throttleDrag();
+
+      // 通用写法
+      const throttle = (fn, delay = 100) => {
+        let timer = null;
+        return (...arg) => {
+          if (timer) {
+            return;
+          } else {
+            timer = setTimeout(() => {
+              // console.log(arg[0].offsetY);
+              fn.apply(this, arg);
+              clearTimeout(timer);
+              timer = null;
+            }, delay);
+          }
+        };
+      };
+      d.addEventListener(
+        "drag",
+        throttle(e => {
+          console.log(e.offsetX);
+        }, 300)
+      );
+    </script>
+  </body>
+</html>
