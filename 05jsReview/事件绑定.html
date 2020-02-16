@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>事件绑定</title>
+    <style>
+      .item {
+        width: 100px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+      }
+      .active {
+        border: 1px solid #f00;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <p class="item">box 1</p>
+      <p class="item">box 2</p>
+    </div>
+    <script>
+      const container = document.querySelector(".container");
+      // 代理绑定
+      const itembind = () => {
+        container.addEventListener("click", e => {
+          document.querySelectorAll(".container .item").forEach(v => {
+            v.className = "item";
+          });
+          if (e.target.matches(".item")) {
+            e.target.className = "item active";
+          }
+        });
+      };
+      // itembind();
+
+      // 通用绑定：直接 + 代理绑定事件
+      const bindEvent = (ele, event, fn, select) => {
+        ele.addEventListener(event, e => {
+          const target = e.target;
+          if (select) {
+            if (target.matches(select)) {
+              fn.call(target, e);
+            }
+          } else {
+            fn.call(target, e);
+          }
+        });
+      };
+      bindEvent(
+        container,
+        "click",
+        e => {
+          console.log(e.target.innerHTML);
+        },
+        ".item"
+      );
+    </script>
+  </body>
+</html>
