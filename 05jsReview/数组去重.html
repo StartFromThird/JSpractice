@@ -1,0 +1,58 @@
+<script>
+  // set
+  let arr = [1, 2, 3, 4, 3, 6];
+  const bySet = arr => {
+    return Array.from(new Set(arr));
+  };
+  console.log("bySet", bySet([...arr]));
+
+  // 对象
+  const byObject = arr => {
+    let o = {};
+    for (let i = 0; i < arr.length; i++) {
+      let v = arr[i];
+      if (typeof o[v] !== "undefined") {
+        arr[i] = arr[arr.length - 1];
+        arr.length--;
+        i--;
+        continue;
+      }
+      o[v] = v;
+    }
+    return arr;
+  };
+  console.log("byObj", byObject([...arr]));
+
+  // es5
+  const withoutES6 = arr => {
+    for (let i = 0; i < arr.length; i++) {
+      let v = arr[i];
+      let leftArr = arr.slice(i + 1);
+      if (leftArr.indexOf(v) !== -1) {
+        arr[i] = arr[arr.length - 1];
+        arr.length--;
+        i--;
+        continue;
+      }
+    }
+    return arr;
+  };
+  console.log("withoutES6", withoutES6([...arr]));
+
+  // 先排序，后去重、
+  let a2 = [1, 3, 1, 2, 1, 3];
+  const sortRemoveNeighbor = arr => {
+    arr = arr.sort((a, b) => {
+      return a - b;
+    });
+    arr = arr.join("=") + "=";
+    let reg = /(\d+=)\1*/g;
+    let res = [];
+    arr.replace(reg, (v, g1) => {
+      // console.log("v", v, "g1", g1);
+      res.push(parseInt(g1.slice(0, -1)));
+    });
+    return res;
+  };
+  console.log("sortRemoveNeighbor", sortRemoveNeighbor([...a2]));
+</script>

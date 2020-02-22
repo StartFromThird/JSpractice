@@ -1,0 +1,69 @@
+<script>
+  // 斐波那契 1, 1, 2, 3, 5, 8...
+  // 4 -> 5  5 -> 8
+  const f = [1, 1];
+  const fib = i => {
+    if (i < 0 || parseInt(i) !== i) {
+      return false;
+    }
+    if (f[i]) {
+      return f[i];
+    }
+    f[i] = fib(i - 1) + fib(i - 2);
+    return f[i];
+  };
+  // console.log(fib(5));
+  // console.log(f);
+  // console.log(fib(4));
+</script>
+<script>
+  // 输入N, 输出所有和为N的'连续'正数序列
+  // 15 -> [ [1, 2, 3, 4, 5], [4, 5, 6], [7, 8] ];
+  const consecutiveIntSum = n => {
+    let res = [];
+    let mid = Math.ceil(n / 2);
+    let start = mid;
+    let j = mid;
+    // i 几个数求和
+    // j 从 j 开始算起
+    for (let i = 2; ; i++) {
+      for (j = start; j > 0; j--) {
+        if (i > j) {
+          break;
+        }
+        if (decreaseSum(j, i) === n) {
+          res.unshift(decreaseArr(j, i));
+          start = j - 1;
+          break;
+        } else if (decreaseSum(j, i) < n) {
+          start = j;
+          break;
+        }
+      }
+      if (i > j) {
+        break;
+      }
+    }
+    return res;
+  };
+  // 从 n 开始整数递减，一共m个数字，求和
+  const decreaseSum = (n, m) => {
+    if (m < 1 || parseInt(m) !== m) {
+      return "数字个数应该是正整数";
+    }
+    return ((2 * n - m + 1) * m) / 2;
+  };
+  // 从 n 开始整数递减，一共m个数字，对应数组
+  const decreaseArr = (n, m) => {
+    if (m < 1 || parseInt(m) !== m) {
+      return "数字个数应该是正整数";
+    }
+    let res = [];
+    for (let i = 0; i < m; i++) {
+      res.unshift(n - i);
+    }
+    return res;
+  };
+  // console.log("consecutiveIntSum(50)", consecutiveIntSum(50));
+  // console.log("consecutiveIntSum(15)", consecutiveIntSum(15));
+</script>
