@@ -6,7 +6,7 @@
   });
   console.log("sort :", sort);
 
-  // 冒泡排序
+  // 冒泡排序 两两依次比较最大值，大的后移。每轮最大值到达最终位置。O(n2)
   const BubbleSort = arr => {
     let len = arr.length;
     for (let i = 0; i < len - 1; i++) {
@@ -46,7 +46,7 @@
   };
   console.log("quickSort([...a]) :", quickSort([...a]));
 
-  // 直接插入排序
+  // 直接插入排序  依次从无序列中拿一个 a，a 依次和有序列比较，插入有序列中。O(n2)
   const insertSort = arr => {
     let res = [arr[0]];
     let len = arr.length;
@@ -58,12 +58,31 @@
           res.splice(j, 0, cur);
           break;
         }
-        if (i === resLen - 1) {
+        if (j === resLen - 1) {
           res.push(cur);
         }
       }
+      console.log("res :", JSON.parse(JSON.stringify(res)));
     }
     return res;
   };
   console.log("insertSort([...a]) :", insertSort([...a]));
+
+  // 选择排序  从后方无序列找出最小值，与无序列第一个交换。每轮最小值到达最终位置。O(n2)
+  const selectionSort = arr => {
+    let len = arr.length;
+    for (let i = 0; i < len; i++) {
+      let min = arr[i];
+      let minI = i;
+      for (let j = i + 1; j < len; j++) {
+        if (arr[j] < min) {
+          min = arr[j];
+          minI = j;
+        }
+      }
+      [arr[i], arr[minI]] = [arr[minI], arr[i]];
+    }
+    return arr;
+  };
+  console.log("selectionSort([...a]) :", selectionSort([...a]));
 </script>
